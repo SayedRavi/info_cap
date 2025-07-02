@@ -21,6 +21,10 @@ body {
   box-shadow: 0 0 15px #f96363; /* Neon Purple for a glowing effect */
   width: 100%; /* Adjust based on preference */
 }
+.notification{
+  color: #f96363;
+  font-size: 0,85rem;
+}
 
 .form-container, .table-container {
   flex: 1;
