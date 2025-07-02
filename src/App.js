@@ -6,7 +6,7 @@ function App() {
     const [formData, setFormData] = useState({firstName: '', lastName: '', city: ''})
     const [record, setRecord] = useState([]);
     const [isEditingId, setIsEditingId] = useState(null);
-
+    const [getNotification, setGetNotification] = useState('');
   const formHandle = (e)=>{
     e.preventDefault();
     if(isEditing){
@@ -19,6 +19,10 @@ function App() {
         setIsEditingId(null);
         setIsEditing(false);
         fetchData();
+        setGetNotification('A new record has been added.');
+        setTimeout(()=>{
+          setGetNotification('')
+        }, 5000)
       
       })
      }else{
@@ -26,8 +30,14 @@ function App() {
         method: 'POST',
         header: {'content-type' : 'application/json'},
         body: JSON.stringify(formData)
-      })
+      }).then(()=>{
+        setGetNotification('A new record has been added.');
       fetchData();
+        setFormData({firstName: '', lastName: '', city: ''});
+        setTimeout(()=>{
+          setGetNotification('')
+        }, 5000)
+      })
      }
       
     
@@ -62,7 +72,13 @@ function App() {
     const handleDelete = (id)=>{
       fetch(`https://db-infocap-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`, {
         method: 'DELETE'
-      });
+      }).then(()=>{
+        setGetNotification('You deleted a record');
+        setTimeout(()=>{
+          setGetNotification('');
+        }, 5000);
+      })
+      setRecord(record.filter(record => record.id !== id));
     
     }
 
@@ -93,7 +109,7 @@ function App() {
 
     <div className="table-container">
       <h2>Citizens </h2>
-      <h4 className='notification'>A New record has been added.</h4>
+      <h4 className='notification'>{getNotification}</h4>
       <table>
         <thead>
           <tr>
